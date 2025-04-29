@@ -1,28 +1,42 @@
-import React, { useEffect, useState } from 'react'
-import PhoneCard from './PhoneCard'
+import React, { useEffect, useState } from "react";
+import PhoneCard from "./PhoneCard";
+import Button from "./ui/Button";
 
-const PhonesContainer = ({phones}) => {
-  const [displayPhones, setDisplayPhones] = useState([])
-  const [showAll, setShowAll] = useState(false)
+const PhonesContainer = ({ phones }) => {
+  const [displayPhones, setDisplayPhones] = useState([]);
+  const [showAll, setShowAll] = useState(false);
 
-  useEffect(()=>{
-    if(showAll){
-      setDisplayPhones(phones)
-    }else{
-      setDisplayPhones(phones.slice(0,6))
+  useEffect(() => {
+    if (showAll) {
+      setDisplayPhones(phones);
+    } else {
+      setDisplayPhones(phones.slice(0, 6));
     }
-  },[phones, showAll])
+  }, [phones, showAll]);
   return (
-    <div className='py-12'>
-      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8'>
-          
-          {
-            displayPhones.map(phone => (
-              <PhoneCard  key={phone.id} phone={phone}></PhoneCard>
-            ))
-          }
+    <div className="py-12">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
+        {displayPhones.map((phone) => (
+          <PhoneCard key={phone.id} phone={phone}></PhoneCard>
+        ))}
       </div>
-      <button  onClick={()=>{
+
+      <Button
+        type={"submit"}
+        onClick={() => {
+          setShowAll((prev) => !prev);
+          if (showAll) window.scrollTo(0, 400);
+        }}
+        label={showAll ? "Show Less" : "Show All"}
+      />
+    </div>
+  );
+};
+
+export default PhonesContainer;
+
+{
+  /* <button  onClick={()=>{
         setShowAll(prev => !prev)
         if(showAll) window.scrollTo(0,400)
       }}
@@ -30,10 +44,5 @@ const PhonesContainer = ({phones}) => {
             <span className="absolute inset-0 w-full h-full transition duration-200 ease-out transform translate-x-1 translate-y-1 bg-black group-hover:-translate-x-0 group-hover:-translate-y-0"></span>
             <span className="absolute inset-0 w-full h-full bg-white border-2 border-black group-hover:bg-black"></span>
             <span className="relative text-black group-hover:text-white">{showAll? "Show Less" : 'Show All'}</span>
-      </button>
- 
-    </div>
-  )
+      </button> */
 }
-
-export default PhonesContainer

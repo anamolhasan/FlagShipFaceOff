@@ -1,9 +1,35 @@
-import React from 'react'
+import React, { useEffect, useState } from "react";
+import PhoneCard from "../components/PhoneCard";
+import { getFavorite, removeFavorite } from "../utility/localstorage";
+import EmptyState from "../components/ui/EmptyState";
 
 const Favorites = () => {
-  return (
-    <div>Favorites</div>
-  )
-}
+  const [displayPhones, setDisplayPhones] = useState([]);
 
-export default Favorites
+  useEffect(() => {
+    const savedPhones = getFavorite();
+    setDisplayPhones(savedPhones);
+  }, []);
+
+  const handleDelete = (id) => {
+    removeFavorite(id);
+    setDisplayPhones(getFavorite());
+  };
+  if(displayPhones.length <1) return <EmptyState />
+  return (
+    <div className="py-12">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
+        {displayPhones.map((phone) => (
+          <PhoneCard
+            key={phone.id}
+            phone={phone}
+            deletable={true}
+            handleDelete={handleDelete}
+          ></PhoneCard>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default Favorites;
